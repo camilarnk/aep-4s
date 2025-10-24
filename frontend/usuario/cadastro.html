@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - OcupaMais</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <h2>Cadastro de Usuário</h2>
+  <form id="formCadastro">
+    <input type="text" name="nome" placeholder="Nome completo" required><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="senha" placeholder="Senha" required><br>
+    <input type="text" name="bairro" placeholder="Bairro" required><br>
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <script>
+    document.getElementById("formCadastro").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const dados = {
+        nome: e.target.nome.value,
+        email: e.target.email.value,
+        senha: e.target.senha.value,
+        tipo: "USUARIO",
+        bairro: e.target.bairro.value
+      };
+
+      const resposta = await fetch("http://localhost:8080/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+      });
+
+      if (resposta.ok) {
+        alert("Cadastro realizado com sucesso!");
+        window.location.href = "login.html";
+      } else {
+        alert("Erro ao cadastrar.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OcupaMais - Início</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f4f3;
+      color: #333;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6em;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px 10%;
+    }
+
+    .intro {
+      max-width: 50%;
+    }
+
+    .intro h2 {
+      font-size: 2em;
+      color: #256429;
+    }
+
+    .intro p {
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    .login-box h3 {
+      margin-bottom: 20px;
+      color: #256429;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .login-box button:hover {
+      background-color: #256429;
+    }
+
+    .login-box a {
+      display: block;
+      margin-top: 10px;
+      color: #2e7d32;
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+
+    .login-box a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌳 OcupaMais</h1>
+    <nav>
+      <a href="usuario/publicacoes.html">Relatos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Bem-vindo ao OcupaMais!</h2>
+      <p>Participe ajudando a melhorar os espaços públicos da sua cidade 🌿<br>
+      Publique relatos, apoie melhorias e acompanhe as ações na sua região.</p>
+    </section>
+
+    <section class="login-box">
+      <h3>Entrar</h3>
+      <form id="formLogin">
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="senha" placeholder="Senha" required />
+        <button type="submit">Login</button>
+        <a href="usuario/cadastro.html">Não tem uma conta?</a>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("formLogin").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const dados = {
+        email: e.target.email.value,
+        senha: e.target.senha.value
+      };
+
+      try {
+        const resposta = await fetch("http://localhost:8080/usuarios/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+
+        if (!resposta.ok) {
+          alert("Email ou senha incorretos.");
+          return;
+        }
+
+        const usuario = await resposta.json();
+        localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+
+        alert("Login realizado com sucesso!");
+        window.location.href = "usuario/perfil.html";
+      } catch (erro) {
+        alert("Erro de conexão com o servidor.");
+        console.error(erro);
+      }
+    });
+  </script>
+</body>
+</html>
