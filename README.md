@@ -12,7 +12,7 @@ Projeto desenvolvido para o 4º semestre do curso.
 ```bash
 mvn clean install
 mvn spring-boot:run
-
+```
 ## Estrutura do Projeto
 
 / → Raiz do projeto  
