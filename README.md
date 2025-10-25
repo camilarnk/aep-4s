@@ -15,6 +15,8 @@ mvn spring-boot:run
 ```
 ## Estrutura do Projeto
 
+### Backend
+```bash
 / → Raiz do projeto  
 ├─ /src → Código-fonte Java  
 │ ├─ /model → Classes de modelo (entidades do sistema)  
@@ -28,7 +30,7 @@ mvn spring-boot:run
 ├─ /lib → Bibliotecas externas (.jar), ex.: driver JDBC do MySQL  
 ├─ .vscode → Configurações do Visual Studio Code  
 └─ README.md → Documentação do projeto  
-
+```
 
 ### Descrição das Pastas
 
@@ -40,7 +42,7 @@ mvn spring-boot:run
 - **`.vscode`**: Configurações específicas do VS Code (não obrigatório para compilação, mas facilita o desenvolvimento).
 
 ### Frontend
-
+```bash
 / → Raiz do projeto  
 ├── pom.xml
 ├── src/
@@ -66,3 +68,4 @@ mvn spring-boot:run
     │   └── publicacoes.html
     └── assets/
         └── logo.png
+```
