@@ -1,0 +1,6 @@
+# .gitignore
+target/
+*.iml
+.idea/
+.vscode/
+src\main\resources\application.properties
