@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OcupaMais - Publicações</title>
+  <link rel="icon" type="image/png" href="/frontend/assets/logo-arvore.png">
   <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <style>
     /* ======== Estilos Globais ======== */
     body {
@@ -100,6 +102,43 @@
       margin-top: 10px;
     }
 
+    .new-post .inline-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .new-post input[type="text"],
+    .new-post select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cfd8dc;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 0.95em;
+    }
+
+    .new-post input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #cfd8dc;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 0.9em;
+    }
+
+    .post-preview {
+      margin-top: 10px;
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      display: none;
+    }
+
     .actions button {
       background-color: #2e7d32;
       color: white;
@@ -145,6 +184,141 @@
       margin: 0;
       color: #444;
       line-height: 1.5;
+    }
+
+    /* ======== Detalhes do Post ======== */
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #c8e6c9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #256429;
+      font-weight: 700;
+    }
+
+    .post-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-meta .author {
+      font-weight: 600;
+      color: #256429;
+    }
+
+    .post-meta .info {
+      font-size: 0.88em;
+      color: #666;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78em;
+      font-weight: 600;
+      margin-left: auto;
+      border: 1px solid transparent;
+    }
+
+    .status-pendente { background: #fff3cd; color: #856404; border-color: #ffe69c; }
+    .status-analise { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
+    .status-resolvido { background: #e8f5e9; color: #256429; border-color: #c8e6c9; }
+
+    .post-image {
+      width: 100%;
+      height: 350px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #e8f5e9;
+      margin: 12px 0 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .post-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .like-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .like-btn.liked {
+      background: #256429;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+    }
+
+    .likes-count {
+      color: #256429;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .caption {
+      margin-top: 6px;
+      color: #444;
+    }
+
+    .comments {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #eef3ef;
+    }
+
+    .comment {
+      margin-bottom: 8px;
+      color: #4b4b4b;
+    }
+
+    .comment .author {
+      color: #256429;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+
+    .comment-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comment-form input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cfd8dc;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 0.95em;
+    }
+
+    .comment-form button {
+      background-color: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
     }
 
     /* ======== Sidebar ======== */
@@ -198,11 +372,11 @@
 </head>
 <body>
   <header>
-    <h1>OcupaMais</h1>
+    <h1>🌳 OcupaMais</h1>
     <nav>
-      <a href="../index.html">Início</a>
-      <a href="cadastro.html">Cadastro</a>
-      <a href="publicacoes.html" class="active">Publicações</a>
+      <a href="../index.html">🏠 Início</a>
+      <a href="cadastro.html">📝 Cadastro</a>
+      <a href="perfil.html" class="active">👤 Perfil</a>
     </nav>
   </header>
 
@@ -210,9 +384,17 @@
     <section class="feed">
       <div class="new-post">
         <textarea id="postText" placeholder="Compartilhe algo sobre o espaço público..."></textarea>
-        <div class="actions">
-          <button id="btnPostar">Publicar</button>
+        <div class="inline-fields">
+          <input type="text" id="postLocal" placeholder="Local (ex.: Maringá)" />
+          <select id="postStatus" aria-label="Status da publicação">
+            <option value="pendente">Pendente</option>
+            <option value="analise">Em análise</option>
+            <option value="resolvido">Resolvido</option>
+          </select>
+          <input type="file" id="postImage" accept="image/*" />
+          <button id="btnPostar" type="button" class="btn btn-success">Publicar</button>
         </div>
+        <img id="postPreview" class="post-preview" alt="Pré-visualização da imagem" />
       </div>
 
       <div id="postList" class="post-list">
@@ -231,6 +413,188 @@
     </aside>
   </main>
 
-  <script src="js/publicacoes.js"></script>
+  <script>
+    // Interação mínima: botão de curtir com contador simulado por post
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest(".like-btn");
+      if (!btn) return;
+      const post = btn.closest(".post");
+      const counter = post.querySelector(".likes-count");
+      let value = parseInt(counter.dataset.count || counter.textContent.replace(/\D/g, ""), 10) || 0;
+      if (btn.classList.contains("liked")) {
+        btn.classList.remove("liked");
+        value = Math.max(0, value - 1);
+      } else {
+        btn.classList.add("liked");
+        value = value + 1;
+      }
+      counter.dataset.count = String(value);
+      counter.textContent = value + (value === 1 ? " curtida" : " curtidas");
+    });
+  </script>
+
+  <script>
+    // Carregar posts simulados estaticamente no container
+    (function renderFakeFeed() {
+      const list = document.getElementById("postList");
+      if (!list) return;
+      list.innerHTML = `
+        <article class="post">
+          <div class="post-header">
+            <div class="avatar">CR</div>
+            <div class="post-meta">
+              <span class="author">Camila Reinke</span>
+              <span class="info">Maringá(Centro) • há 2 horas</span>
+            </div>
+            <span class="status-badge status-pendente" title="Status">Pendente</span>
+          </div>
+          <img class="post-image" src="https://s2-g1.glbimg.com/zXMSe2WU0kughoVcF9fquxqwZY0=/0x0:1200x800/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/3/P/7zOxyWT9AiqkcTzFBiyA/httpsportalnorte.com.brwp-adminpost.phppost-292629-action-edit-2025-10-13t155914.133.jpg" alt="Buraco em Maringá">
+          <div class="post-actions">
+            <button class="like-btn" type="button">❤️ Curtir</button>
+            <span class="likes-count" data-count="12">12 curtidas</span>
+          </div>
+          <p class="caption">Buraco aberto no centro de Maringá! Tomara que arrumem logo isso.</p>
+          <div class="comments">
+            <div class="comment"><span class="author">João:</span> Meu Deus! </div>
+            <div class="comment"><span class="author">Carla:</span> A prefeitura deve ser acionada imediatamente.</div>
+            <div class="comment-form">
+              <input type="text" class="comment-input" placeholder="Adicionar comentário..." />
+              <button class="add-comment-btn" type="button">Comentar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="post">
+          <div class="post-header">
+            <div class="avatar">TH</div>
+            <div class="post-meta">
+              <span class="author">Thiago Henrique</span>
+              <span class="info">Maringá(Tiradentes) • ontem</span>
+            </div>
+            <span class="status-badge status-analise" title="Status">Em análise</span>
+          </div>
+          <img class="post-image" src="https://www.maringamais.com.br/wp-content/uploads/2025/10/tiradentes-640x427.jpg" alt="Alinhamento de asfalto">
+          <div class="post-actions">
+            <button class="like-btn" type="button">❤️ Curtir</button>
+            <span class="likes-count" data-count="34">34 curtidas</span>
+          </div>
+          <p class="caption">Finalmente!!! Não aguentava mais buracos na Tiradentes.</p>
+          <div class="comments">
+            <div class="comment"><span class="author">Lucas:</span> Demoraram uma eternidade, mas finalmente começaram.</div>
+            <div class="comment"><span class="author">Marta:</span> Tomara que façam em outras áreas da cidade.</div>
+            <div class="comment-form">
+              <input type="text" class="comment-input" placeholder="Adicionar comentário..." />
+              <button class="add-comment-btn" type="button">Comentar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="post">
+          <div class="post-header">
+            <div class="avatar">MJ</div>
+            <div class="post-meta">
+              <span class="author">Michael Jackson</span>
+              <span class="info">Maringá • há 3 dias</span>
+            </div>
+            <span class="status-badge status-resolvido" title="Status">Resolvido</span>
+          </div>
+          <img class="post-image" src="https://maringapost.com.br/wp-content/uploads/2025/08/centro_maringa_foto_rdziura-0961-1130x580.jpg" alt="Maringá">
+          <div class="post-actions">
+            <button class="like-btn" type="button">❤️ Curtir</button>
+            <span class="likes-count" data-count="7">7 curtidas</span>
+          </div>
+          <p class="caption">Maringá lidera infraestrutura urbana entre grandes cidades do Sul 🙌</p>
+          <div class="comments">
+            <div class="comment"><span class="author">Bianca:</span> Que orgulho de morar nessa cidade!</div>
+            <div class="comment"><span class="author">Pedro:</span> Infelizmente algumas regiões são muito perigosas ainda.</div>
+            <div class="comment-form">
+              <input type="text" class="comment-input" placeholder="Adicionar comentário..." />
+              <button class="add-comment-btn" type="button">Comentar</button>
+            </div>
+          </div>
+        </article>
+      `;
+    })();
+  </script>
+
+  <script>
+    // Pré-visualização de imagem ao selecionar arquivo
+    (function setupImagePreview() {
+      const input = document.getElementById("postImage");
+      const preview = document.getElementById("postPreview");
+      if (!input || !preview) return;
+      input.addEventListener("change", function() {
+        const file = input.files && input.files[0];
+        if (!file) { preview.src = ""; preview.style.display = "none"; return; }
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.src = String(e.target?.result || "");
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      });
+    })();
+
+    // Criar nova publicação (estática) com local, status e imagem
+    (function setupCreatePost() {
+      const btn = document.getElementById("btnPostar");
+      if (!btn) return;
+      btn.addEventListener("click", function() {
+        const textEl = document.getElementById("postText");
+        const localEl = document.getElementById("postLocal");
+        const statusEl = document.getElementById("postStatus");
+        const imageEl = document.getElementById("postImage");
+        const preview = document.getElementById("postPreview");
+        const list = document.getElementById("postList");
+
+        const text = (textEl?.value || "").trim();
+        const local = (localEl?.value || "").trim() || "Local";
+        const status = statusEl?.value || "pendente";
+        if (!text) { textEl?.focus(); return; }
+
+        const statusLabel = status === "resolvido" ? "Resolvido" : (status === "analise" ? "Em análise" : "Pendente");
+        const statusClass = status === "resolvido" ? "status-resolvido" : (status === "analise" ? "status-analise" : "status-pendente");
+
+        const initials = "VC";
+        const nowInfo = `${local} • agora`;
+        const defaultImage = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop";
+
+        const insertPost = (imageSrc) => {
+          const HTML = `
+          <article class=\"post\">\n            <div class=\"post-header\">\n              <div class=\"avatar\">${initials}</div>\n              <div class=\"post-meta\">\n                <span class=\"author\">Você</span>\n                <span class=\"info\">${nowInfo}</span>\n              </div>\n              <span class=\"status-badge ${statusClass}\" title=\"Status\">${statusLabel}</span>\n            </div>\n            <img class=\"post-image\" src=\"${imageSrc}\" alt=\"Imagem da publicação\">\n            <div class=\"post-actions\">\n              <button class=\"like-btn\" type=\"button\">❤️ Curtir</button>\n              <span class=\"likes-count\" data-count=\"0\">0 curtidas</span>\n            </div>\n            <p class=\"caption\">${text}</p>\n            <div class=\"comments\">\n              <div class=\"comment-form\">\n                <input type=\"text\" class=\"comment-input\" placeholder=\"Adicionar comentário...\" />\n                <button class=\"add-comment-btn\" type=\"button\">Comentar</button>\n              </div>\n            </div>\n          </article>`;
+          list?.insertAdjacentHTML("afterbegin", HTML);
+          if (textEl) textEl.value = "";
+          if (localEl) localEl.value = "";
+          if (statusEl) statusEl.value = "pendente";
+          if (imageEl) imageEl.value = "";
+          if (preview) { preview.src = ""; preview.style.display = "none"; }
+        };
+
+        const file = imageEl && imageEl.files && imageEl.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = e => insertPost(String(e.target?.result || defaultImage));
+          reader.onerror = () => insertPost(defaultImage);
+          reader.readAsDataURL(file);
+        } else {
+          insertPost(defaultImage);
+        }
+      });
+    })();
+
+    // Adicionar comentários via delegação
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest(".add-comment-btn");
+      if (!btn) return;
+      const container = btn.closest(".comments");
+      const input = container?.querySelector(".comment-input");
+      const text = (input?.value || "").trim();
+      if (!text) { input?.focus(); return; }
+      const commentHTML = `<div class=\"comment\"><span class=\"author\">Você:</span> ${text}</div>`;
+      const form = container?.querySelector(".comment-form");
+      if (form) form.insertAdjacentHTML("beforebegin", commentHTML);
+      if (input) input.value = "";
+    });
+  </script>
 </body>
 </html>

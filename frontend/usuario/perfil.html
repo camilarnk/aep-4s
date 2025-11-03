@@ -1,11 +1,301 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OcupaMais - Perfil</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/png" href="/frontend/assets/logo-arvore.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #eaf3ec 0%, #ffffff 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 { margin: 0; font-size: 1.8em; font-weight: 600; }
+
+    header nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    header nav a:hover { opacity: 0.85; }
+
+    header nav a.active { border-bottom: 2px solid #c8e6c9; padding-bottom: 3px; }
+
+    main.profile-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 5%;
+    }
+
+    .profile-card {
+      background: #fff;
+      width: 100%;
+      max-width: 980px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      padding: 28px;
+      border-left: 6px solid #2e7d32;
+    }
+
+    .profile-header {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .avatar-wrap { text-align: center; }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #c8e6c9;
+      background: #e8f5e9;
+    }
+
+    .change-photo-btn {
+      margin-top: 10px;
+      display: inline-block;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .user-info h2 { margin: 0 0 6px; color: #256429; }
+    .user-info p { margin: 2px 0; color: #555; }
+    .role-badge {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #0d47a1;
+      border: 1px solid #bbdefb;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85em;
+      margin-top: 6px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .stat-card {
+      background: #f7fbf8;
+      border: 1px solid #e0ece4;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat-card h3 { margin: 0; font-size: 1.8rem; color: #256429; }
+    .stat-card span { color: #467a4a; font-weight: 600; }
+
+    .section-title {
+      margin: 28px 0 10px;
+      color: #256429;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .about-card {
+      background: #fff;
+      border: 1px solid #e8f0ea;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .about-actions { margin-top: 12px; display: flex; gap: 10px; }
+    .btn-primary-like {
+      background: #2e7d32; color: #fff; border: none; border-radius: 8px;
+      padding: 8px 14px; font-weight: 600; cursor: pointer;
+    }
+    .btn-secondary-like {
+      background: #e8f5e9; color: #256429; border: 1px solid #c8e6c9; border-radius: 8px;
+      padding: 8px 14px; font-weight: 600; cursor: pointer;
+    }
+    .about-textarea {
+      width: 100%; min-height: 110px; padding: 10px; border: 1px solid #cfd8dc; border-radius: 10px;
+      background: #fff; font-size: 1em; resize: vertical;
+    }
+
+    @media (max-width: 900px) {
+      .profile-header { grid-template-columns: 1fr; justify-items: center; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    
+  <header>
+    <h1>🌳 OcupaMais</h1>
+    <nav>
+      <a href="../index.html">🏠 Início</a>
+      <a href="publicacoes.html">📝 Postagens</a>
+      <a href="perfil.html" class="active">👤 Perfil</a>
+    </nav>
+  </header>
+
+  <main class="profile-container">
+    <section class="profile-card">
+      <div class="profile-header">
+        <div class="avatar-wrap">
+          <img id="avatarImg" class="avatar" src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png" alt="Foto de perfil">
+          <div>
+            <input id="avatarInput" type="file" accept="image/*" hidden>
+            <button id="changePhotoBtn" class="change-photo-btn" type="button">Alterar foto</button>
+          </div>
+        </div>
+        <div class="user-info">
+          <h2 id="userName">Usuario</h2>
+          <p id="userEmail">Usuario@example.com</p>
+          <span id="userRole" class="role-badge">USUÁRIO</span>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3 id="statTotal">18</h3>
+              <span>Total de publicações</span>
+            </div>
+            <div class="stat-card">
+              <h3 id="statResolvidas">7</h3>
+              <span>Resolvidas</span>
+            </div>
+            <div class="stat-card">
+              <h3 id="statAnalise">5</h3>
+              <span>Em análise</span>
+            </div>
+            <div class="stat-card">
+              <h3 id="statPendentes">6</h3>
+              <span>Não resolvidas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-title">Sobre</h3>
+      <div class="about-card">
+        <p id="aboutText">Digite sobre você...</p>
+        <textarea id="aboutInput" class="about-textarea" style="display:none;" placeholder="Escreva algo sobre você..."></textarea>
+        <div class="about-actions">
+          <button id="editAboutBtn" type="button" class="btn-secondary-like">Editar</button>
+          <button id="saveAboutBtn" type="button" class="btn-primary-like" style="display:none;">Salvar</button>
+          <button id="cancelAboutBtn" type="button" class="btn-secondary-like" style="display:none;">Cancelar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Simulação de troca de foto de perfil com preview
+    (function setupAvatarChange() {
+      const btn = document.getElementById('changePhotoBtn');
+      const input = document.getElementById('avatarInput');
+      const img = document.getElementById('avatarImg');
+      if (!btn || !input || !img) return;
+
+      btn.addEventListener('click', function() { input.click(); });
+      input.addEventListener('change', function() {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => { img.src = String(e.target?.result || img.src); };
+        reader.readAsDataURL(file);
+      });
+    })();
+
+    // Editar "Sobre" com persistência local
+    (function setupAboutEdit() {
+      const aboutText = document.getElementById('aboutText');
+      const aboutInput = document.getElementById('aboutInput');
+      const editBtn = document.getElementById('editAboutBtn');
+      const saveBtn = document.getElementById('saveAboutBtn');
+      const cancelBtn = document.getElementById('cancelAboutBtn');
+      if (!aboutText || !aboutInput || !editBtn || !saveBtn || !cancelBtn) return;
+
+      // Carregar do localStorage, se houver
+      try {
+        const stored = localStorage.getItem('perfilSobre');
+        if (stored && stored.trim()) {
+          aboutText.textContent = stored;
+        }
+      } catch {}
+
+      function enterEdit() {
+        aboutInput.value = aboutText.textContent || '';
+        aboutText.style.display = 'none';
+        aboutInput.style.display = 'block';
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
+        aboutInput.focus();
+      }
+
+      function exitEdit(save) {
+        if (save) {
+          const value = (aboutInput.value || '').trim();
+          aboutText.textContent = value || 'Sem descrição.';
+          try { localStorage.setItem('perfilSobre', aboutText.textContent); } catch {}
+        }
+        aboutText.style.display = 'block';
+        aboutInput.style.display = 'none';
+        editBtn.style.display = 'inline-block';
+        saveBtn.style.display = 'none';
+        cancelBtn.style.display = 'none';
+      }
+
+      editBtn.addEventListener('click', enterEdit);
+      saveBtn.addEventListener('click', function() { exitEdit(true); });
+      cancelBtn.addEventListener('click', function() { exitEdit(false); });
+    })();
+
+    // Exemplo de como poderíamos carregar dados simulados do localStorage (opcional)
+    (function hydrateFromStorage() {
+      try {
+        const stored = localStorage.getItem('usuarioLogado');
+        if (!stored) return;
+        const user = JSON.parse(stored);
+        const name = document.getElementById('userName');
+        const email = document.getElementById('userEmail');
+        const role = document.getElementById('userRole');
+        if (user?.nome) name.textContent = user.nome;
+        if (user?.email) email.textContent = user.email;
+        if (user?.tipo) role.textContent = (String(user.tipo).toUpperCase() === 'ADMIN') ? 'ADMIN' : 'USUÁRIO';
+      } catch {}
+    })();
+  </script>
 </body>
 </html>

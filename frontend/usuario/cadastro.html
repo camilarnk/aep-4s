@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Cadastro - OcupaMais</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/png" href="/frontend/assets/logo-arvore.png">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -137,7 +138,7 @@
       </select>
 
       <button type="submit">
-        <a href="publicacoes.html" class="padronizar-link">Cadastrar</a>
+        Cadastrar
       </button>
     </form>
 
@@ -156,22 +157,13 @@
         bairro: e.target.bairro.value
       };
 
-      try {
-        const resposta = await fetch("http://localhost:8080/usuarios", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dados)
-        });
-
-        if (resposta.ok) {
-          alert("Cadastro realizado com sucesso!");
-          window.location.href = "publicacoes.html";
-        } else {
-          alert("Erro ao cadastrar. Verifique os dados e tente novamente.");
-        }
-      } catch (erro) {
-        alert("Falha ao conectar com o servidor.");
-        console.error(erro);
+      // Simular cadastro local
+      try { localStorage.setItem("usuarioLogado", JSON.stringify(dados)); } catch {}
+      alert("Cadastro realizado com sucesso!");
+      if (dados.tipo === "ADMIN") {
+        window.location.href = "../admin/relatorios.html";
+      } else {
+        window.location.href = "publicacoes.html";
       }
     });
   </script>

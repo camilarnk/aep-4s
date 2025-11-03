@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OcupaMais - Publicações (Admin)</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/png" href="/frontend/assets/logo-arvore.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    /* Base visual do projeto */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #eaf3ec 0%, #ffffff 100%);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 { margin: 0; font-size: 1.8em; font-weight: 600; }
+
+    header nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    header nav a:hover { opacity: 0.85; }
+    header nav a.active { border-bottom: 2px solid #c8e6c9; padding-bottom: 3px; }
+
+    /* Layout principal */
+    main.page {
+      display: flex;
+      gap: 40px;
+      padding: 40px 5%;
+      flex: 1;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .feed {
+      flex: 2;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    /* Cards de publicações */
+    .post-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .post {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      border-left: 5px solid #2e7d32;
+    }
+
+    .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+
+    .avatar { width: 42px; height: 42px; border-radius: 50%; background: #c8e6c9; display: inline-flex; align-items: center; justify-content: center; color: #256429; font-weight: 700; }
+
+    .post-meta { display: flex; flex-direction: column; }
+    .post-meta .author { font-weight: 600; color: #256429; }
+    .post-meta .info { font-size: 0.88em; color: #666; }
+
+    .status-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.78em; font-weight: 600; margin-left: auto; border: 1px solid transparent; }
+    .status-analise { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
+    .status-resolvido { background: #e8f5e9; color: #256429; border-color: #c8e6c9; }
+    .status-pendente { background: #fff3cd; color: #856404; border-color: #ffe69c; } /* Não resolvido */
+
+    .post-image { width: 100%; height: 320px; border-radius: 10px; object-fit: cover; background: #e8f5e9; margin: 12px 0 10px; border: 1px solid #e0e0e0; }
+
+    .moderation-bar { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+    .moderation-bar label { color: #256429; font-weight: 600; font-size: 0.92em; }
+    .moderation-select { padding: 8px 10px; border-radius: 8px; border: 1px solid #cfd8dc; background: #fff; }
+
+    .caption { margin-top: 6px; color: #444; }
+
+    /* Sidebar opcional para navegação/admin */
+    .sidebar {
+      background: #f7fbf8;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      width: 260px;
+      height: fit-content;
+    }
+
+    .sidebar h3 { color: #256429; margin-bottom: 12px; }
+    .sidebar a { display: block; color: #2e7d32; text-decoration: none; font-weight: 600; padding: 8px 10px; border-radius: 8px; }
+    .sidebar a:hover { background: #e8f5e9; }
+    .sidebar a.active { background: #c8e6c9; }
+
+    @media (max-width: 1000px) {
+      main.page { flex-direction: column; align-items: center; }
+      .sidebar { width: 100%; max-width: 1000px; order: -1; }
+      .feed { max-width: 1000px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌳 OcupaMais</h1>
+    <nav>
+      <a href="../index.html">🏠 Início</a>
+      <a href="relatorios.html">📊 Relatórios</a>
+      <a href="notificacoes.html">🔔 Notificações</a>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <section class="feed">
+      <h2 style="color:#256429; margin-top:0;">Moderação de publicações</h2>
+      <p style="color:#4b4b4b; margin-top:4px;">Visualize e altere o status das publicações da comunidade.</p>
+
+      <div id="postList" class="post-list">
+        <!-- Publicações estáticas -->
+        <article class="post">
+          <div class="post-header">
+            <div class="avatar">CR</div>
+            <div class="post-meta">
+              <span class="author">Camila Reinke</span>
+              <span class="info">Maringá(Centro) • há 2 horas</span>
+            </div>
+            <span class="status-badge status-pendente" title="Status">Pendente</span>
+          </div>
+          <img class="post-image" src="https://s2-g1.glbimg.com/zXMSe2WU0kughoVcF9fquxqwZY0=/0x0:1200x800/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2025/3/P/7zOxyWT9AiqkcTzFBiyA/httpsportalnorte.com.brwp-adminpost.phppost-292629-action-edit-2025-10-13t155914.133.jpg" alt="Buraco em Maringá">
+          <p class="caption">Buraco aberto no centro de Maringá! Tomara que arrumem logo isso.</p>
+          <div class="comments">
+            <div class="comment"><span class="author">João:</span> Meu Deus! </div>
+            <div class="comment"><span class="author">Carla:</span> A prefeitura deve ser acionada imediatamente.</div>
+          </div>
+          <div class="moderation-bar">
+            <label for="status-2">Status:</label>
+            <select id="status-2" class="moderation-select" data-target="badge-2">
+              <option value="analise" selected>Em análise</option>
+              <option value="resolvido">Resolvido</option>
+              <option value="pendente">Não resolvido</option>
+            </select>
+          </div>
+        </article>
+
+        <article class="post">
+          <div class="post-header">
+            <div class="avatar">TH</div>
+            <div class="post-meta">
+              <span class="author">Thiago Henrique</span>
+              <span class="info">Maringá(Tiradentes) • ontem</span>
+            </div>
+            <span class="status-badge status-analise" title="Status">Em análise</span>
+          </div>
+          <img class="post-image" src="https://www.maringamais.com.br/wp-content/uploads/2025/10/tiradentes-640x427.jpg" alt="Alinhamento de asfalto">
+          <p class="caption">Finalmente!!! Não aguentava mais buracos na Tiradentes.</p>
+          <div class="comments">
+            <div class="comment"><span class="author">Lucas:</span> Demoraram uma eternidade, mas finalmente começaram.</div>
+            <div class="comment"><span class="author">Marta:</span> Tomara que façam em outras áreas da cidade.</div>
+          </div>
+          <div class="moderation-bar">
+            <label for="status-2">Status:</label>
+            <select id="status-2" class="moderation-select" data-target="badge-2">
+              <option value="analise" selected>Em análise</option>
+              <option value="resolvido">Resolvido</option>
+              <option value="pendente">Não resolvido</option>
+            </select>
+          </div>
+        </article>
+
+        <article class="post">
+          <div class="post-header">
+            <div class="avatar">MJ</div>
+            <div class="post-meta">
+              <span class="author">Michael Jackson</span>
+              <span class="info">Maringá • há 3 dias</span>
+            </div>
+            <span class="status-badge status-resolvido" title="Status">Resolvido</span>
+          </div>
+          <img class="post-image" src="https://maringapost.com.br/wp-content/uploads/2025/08/centro_maringa_foto_rdziura-0961-1130x580.jpg" alt="Maringá">
+          <p class="caption">Maringá lidera infraestrutura urbana entre grandes cidades do Sul 🙌</p>
+          <div class="comments">
+            <div class="comment"><span class="author">Bianca:</span> Que orgulho de morar nessa cidade!</div>
+            <div class="comment"><span class="author">Pedro:</span> Infelizmente algumas regiões são muito perigosas ainda.</div>
+          </div>
+          <div class="moderation-bar">
+            <label for="status-2">Status:</label>
+            <select id="status-2" class="moderation-select" data-target="badge-2">
+              <option value="analise" selected>Em análise</option>
+              <option value="resolvido">Resolvido</option>
+              <option value="pendente">Não resolvido</option>
+            </select>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Atualiza o badge de status visualmente ao trocar no select
+    document.addEventListener('change', function(e) {
+      const sel = e.target.closest('.moderation-select');
+      if (!sel) return;
+      const post = sel.closest('.post');
+      const badge = post.querySelector('.status-badge');
+      const val = sel.value; // analise | resolvido | pendente
+
+      // Remove classes anteriores
+      badge.classList.remove('status-analise', 'status-resolvido', 'status-pendente');
+
+      // Aplica nova classe e texto
+      if (val === 'analise') {
+        badge.classList.add('status-analise');
+        badge.textContent = 'Em análise';
+      } else if (val === 'resolvido') {
+        badge.classList.add('status-resolvido');
+        badge.textContent = 'Resolvido';
+      } else {
+        badge.classList.add('status-pendente');
+        badge.textContent = 'Não resolvido';
+      }
+    });
+  </script>
+</body>
+</html>
