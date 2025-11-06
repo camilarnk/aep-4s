@@ -156,10 +156,10 @@ body {
   background-color: #f9faf9;
   transition: 0.3s;
   display: block;
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 
-/* 4) Foco do textarea (mantém o estilo que você já tem) */
+/* 4) Foco do textarea */
 .new-post textarea:focus {
   border-color: #2e7d32;
   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
@@ -169,13 +169,13 @@ body {
 /* 5) Actions: garantir que o botão fique à direita sem afetar a largura do textarea */
 .actions {
   display: flex;
-  justify-content: flex-end; /* coloca o botão na direita */
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  margin-top: 0;             /* já tem gap no .new-post */
+  margin-top: 0;
 }
 
-/* 6) Botão: mantém seu visual */
+/* 6) Botão: mantém visual */
 .actions button {
   background-color: #2e7d32;
   color: white;
