@@ -4,6 +4,8 @@ import com.ocupamais.dto.UsuarioDTO;
 import com.ocupamais.model.Usuario;
 import com.ocupamais.service.UsuarioService;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class UsuarioController {
     @GetMapping
     public List<UsuarioDTO> listarTodos() {
         return usuarioService.listarTodos().stream()
-                .map(u -> new UsuarioDTO(u.getId(), u.getNome()))
+                .map(u -> new UsuarioDTO(u.getId(), u.getNome(), u.getEmail(), u.getTipo()))
                 .collect(Collectors.toList());
     }
 
@@ -31,7 +33,7 @@ public class UsuarioController {
     @PostMapping
     public UsuarioDTO criar(@RequestBody Usuario usuario) {
         usuarioService.cadastrar(usuario);
-        return new UsuarioDTO(usuario.getId(), usuario.getNome());
+        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTipo());
     }
 
     // GET /usuarios/{email} - buscar por email
@@ -39,7 +41,7 @@ public class UsuarioController {
     public UsuarioDTO buscarPorEmail(@PathVariable String email) {
         Usuario usuario = usuarioService.buscarPorEmail(email);
         if (usuario != null) {
-            return new UsuarioDTO(usuario.getId(), usuario.getNome());
+            return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTipo());
         }
         return null;
     }
@@ -49,7 +51,7 @@ public class UsuarioController {
     public UsuarioDTO atualizar(@PathVariable int id, @RequestBody Usuario usuario) {
         usuario.setId(id);
         usuarioService.atualizar(usuario);
-        return new UsuarioDTO(usuario.getId(), usuario.getNome());
+        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTipo());
     }
 
     // DELETE /usuarios/{id} - deletar usuário
@@ -63,4 +65,23 @@ public class UsuarioController {
         }
     }
 
+    // POST /usuarios/login - realizar login
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+        Usuario usuarioBanco = usuarioService.buscarPorEmail(usuario.getEmail());
+
+        if (usuarioBanco == null || !usuarioBanco.getSenha().equals(usuario.getSenha())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha incorretos");
+        }
+
+        // Retorna apenas as informações seguras (sem senha)
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+                usuarioBanco.getId(),
+                usuarioBanco.getNome(),
+                usuarioBanco.getEmail(),
+                usuarioBanco.getTipo()
+        );
+        return ResponseEntity.ok(usuarioDTO);
+    }
+    
 }

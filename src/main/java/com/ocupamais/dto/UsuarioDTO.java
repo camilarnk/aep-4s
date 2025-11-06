@@ -3,12 +3,16 @@ package com.ocupamais.dto;
 public class UsuarioDTO {
     private int id;
     private String nome;
+    private String email;
+    private String tipo;
 
     public UsuarioDTO() {}
 
-    public UsuarioDTO(int id, String nome) {
+    public UsuarioDTO(int id, String nome, String email, String tipo) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
+        this.tipo = tipo;
     }
 
     public int getId() {
@@ -24,7 +28,22 @@ public class UsuarioDTO {
     }
 
     public void setNome(String nome) {
-        this.nome = nome; 
+        this.nome = nome;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 }
