@@ -57,7 +57,7 @@ Para validar a comunicação com o MySQL:
  
 2. O console exibirá: 
     ```
-    Conexão bem-sucedida
+    Conectado ao banco de dados
     ```
     ou  
     ```php-template
