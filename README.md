@@ -1,71 +1,113 @@
 # 🌳 OcupaMais
 
 Sistema de relatos e engajamento em espaços públicos.  
-Projeto desenvolvido para o 4º semestre do curso.
+Projeto desenvolvido para o **4º semestre do curso de Engenharia de Software**.
+
+---
 
 ## 🧩 Tecnologias
-- Java 17 + Spring Boot
-- Maven
-- HTML, CSS, JavaScript
 
-## 🚀 Como rodar
+**Backend:**
+- Java 17
+- Spring Boot
+- MySQL
+- Maven
+
+**Frontend:**
+- HTML5
+- CSS3
+- JavaScript
+
+---
+
+## 🚀 Como Rodar o Projeto
+
+### 🧱 Pré-requisitos
+Garanta que você tem instalado:
+- **Java 17+**
+- **Maven 3.9+**
+- **MySQL Server**
+
+---
+
+### ⚙️ Configuração do Banco de Dados
+No MySQL, crie o banco de dados
+```sql
+CREATE DATABASE ocupamais;
+```
+Faça um arquivo `src/main/resources/application.properties` com suas credenciais
+
+---
+
+### 🧰 Compilação e Execução
+No terminal, dentro da raiz do projeto:
 ```bash
 mvn clean install
 mvn spring-boot:run
 ```
-## Estrutura do Projeto
+A aplicação será iniciada em: 
+👉 http://localhost:8080
 
-### Backend
+---
+
+## 🧪 Testando a Conexão com o Banco
+Para validar a comunicação com o MySQL:
+1. Execute a classe:  
+`src/main/java/util/TestaConexao.java` 
+ 
+2. O console exibirá: 
+    ```
+    Conexão bem-sucedida
+    ```
+    ou  
+    ```php-template
+    Erro ao conectar: <detalhes>
+    ```
+
+---
+
+## 📁 Estrutura do Projeto
+
+### 🔙 Backend
 ```bash
 / → Raiz do projeto  
-├─ /src → Código-fonte Java  
-│ ├─ /model → Classes de modelo (entidades do sistema)  
-│ │ Ex.: Usuario.java, Publicacao.java  
-│ ├─ /dao → Classes de acesso a dados (CRUD com o banco)  
-│ │ Ex.: UsuarioDAO.java, PublicacaoDAO.java  
-│ ├─ /util → Classes utilitárias, como conexão com o   
-│ │ Ex.: Conexao.java  
-│ └─ /main → Classe principal para testar ou iniciar a aplicação  
-│   Ex.: Main.java  
-├─ /lib → Bibliotecas externas (.jar), ex.: driver JDBC do MySQL  
-├─ .vscode → Configurações do Visual Studio Code  
-└─ README.md → Documentação do projeto  
+├── pom.xml                      # Configuração Maven e dependências
+├── .gitignore                   # Arquivos ignorados pelo Git
+├── README.md                    # Documentação do projeto
+└── src/
+    └── main/
+        ├── java/
+        │   ├── com/ocupamais/
+        │   │   ├── controller/   # Controladores REST (endpoints)
+        │   │   ├── dao/          # Acesso ao banco (CRUD via JPA)
+        │   │   ├── dto/          # Objetos de transferência de dados (requisições)
+        │   │   ├── model/        # Entidades do sistema (Usuario, Publicacao, etc.)
+        │   │   ├── service/      # Lógica de negócio (intermediário entre Controller e DAO)
+        │   │   └── Application.java  # Classe principal do Spring Boot
+        │   ├── util/
+        │   │   ├── Conexao.java       # Classe utilitária para conexão manual com MySQL
+        │   │   └── TestaConexao.java  # Testa a conexão manualmente
+        │   └── Main.java              # Classe auxiliar usada para testes manuais
+        └── resources/
+            └── application.properties # Configurações do banco (local, ignorado no Git)
 ```
 
-### Descrição das Pastas
-
-- **`src/model`**: Define os objetos de negócio do sistema, cada classe representa uma tabela do banco de dados.
-- **`src/dao`**: Contém métodos para inserir, atualizar, excluir e buscar dados no banco (CRUD).
-- **`src/util`**: Contém classes utilitárias, como a conexão JDBC com o MySQL (`Conexao.java`).
-- **`src/main`**: Classe principal que inicia a aplicação ou realiza testes das funcionalidades antes de criar interface web.
-- **`lib`**: Contém bibliotecas externas necessárias para o projeto, como o `mysql-connector.jar`.
-- **`.vscode`**: Configurações específicas do VS Code (não obrigatório para compilação, mas facilita o desenvolvimento).
-
-### Frontend
+### 🖥️ Frontend
 ```bash
-/ → Raiz do projeto  
-├── pom.xml
-├── src/
-│   └── ... (backend)
-└── frontend/
-    ├── index.html
-    ├── css/
-    │   └── style.css
-    ├── js/
-    │   └── main.js
-    ├── usuario/
-    │   ├── cadastro.html
-    │   ├── login.html
-    │   ├── perfil.html
-    │   ├── publicacoes.html
-    │   ├── mapa.html
-    │   └── apoio.html
-    ├── admin/
-    │   ├── dashboard.html
-    │   ├── espacos.html
-    │   ├── relatorios.html
-    │   ├── notificacoes.html
-    │   └── publicacoes.html
-    └── assets/
-        └── logo.png
+frontend/
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── main.js
+├── usuario/
+│   ├── cadastro.html
+│   ├── perfil.html
+│   └── publicacoes.html
+├── admin/
+│   ├── notificacoes.html
+│   ├── publicacoes.html
+│   └── relatorios.html
+└── assets/
+    └── logo-arvore.png
 ```
