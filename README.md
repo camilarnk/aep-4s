@@ -78,6 +78,7 @@ Para validar a comunicação com o MySQL:
     └── main/
         ├── java/
         │   ├── com/ocupamais/
+        │   │   ├── config/       # Permite o navegador acessar o backend sem erro de CORS
         │   │   ├── controller/   # Controladores REST (endpoints)
         │   │   ├── dao/          # Acesso ao banco (CRUD via JPA)
         │   │   ├── dto/          # Objetos de transferência de dados (requisições)
@@ -99,7 +100,12 @@ frontend/
 ├── css/
 │   └── style.css
 ├── js/
-│   └── main.js
+│   ├── js/
+│   ├── main.js              # página inicial
+│   ├── usuario.js           # cadastro/login de usuário
+│   ├── publicacao.js        # criação e listagem de publicações
+│   ├── apoio.js             # registrar apoios (curtidas)
+│   └── espaco.js            # cadastrar espaços públicos
 ├── usuario/
 │   ├── cadastro.html
 │   ├── perfil.html
