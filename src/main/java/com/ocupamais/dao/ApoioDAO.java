@@ -68,7 +68,6 @@ public class ApoioDAO {
         return apoios;
     }
 
-    // deletar apoio
     public boolean deletar(int id) {
         String sql = "DELETE FROM Apoios WHERE id = ?";
         try (Connection conn = Conexao.getConnection();
@@ -76,6 +75,21 @@ public class ApoioDAO {
             stmt.setInt(1, id);
             int linhasAfetadas = stmt.executeUpdate();
             return linhasAfetadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // deletar apoio por id_usuario + id_publicacao
+    public boolean deletarPorUsuarioEPublicacao(int idUsuario, int idPublicacao) {
+        String sql = "DELETE FROM Apoios WHERE id_usuario = ? AND id_publicacao = ?";
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            stmt.setInt(2, idPublicacao);
+            int linhas = stmt.executeUpdate();
+            return linhas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

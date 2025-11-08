@@ -48,14 +48,17 @@ public class ApoioController {
 
         return new ApoioDTO(
                 apoio.getId(),
-                usuario != null ? usuario.getNome() : "N/A",
-                publicacao != null ? publicacao.getDescricao() : "N/A"
+                usuario.getNome(),
+                publicacao.getDescricao()
         );
     }
 
-    @DeleteMapping("/{id}")
-    public String deletarApoio(@PathVariable int id) {
-        boolean removido = apoioService.deletar(id);
-        return removido ? "Apoio deletado com sucesso!" : "Apoio não encontrado.";
+    @DeleteMapping("/{idPublicacao}")
+    public String deletarApoio(
+            @PathVariable int idPublicacao,
+            @RequestParam int idUsuario) {
+
+        boolean removido = apoioService.deletarPorUsuarioEPublicacao(idUsuario, idPublicacao);
+        return removido ? "Apoio removido com sucesso!" : "Apoio não encontrado.";
     }
 }

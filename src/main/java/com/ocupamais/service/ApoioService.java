@@ -21,4 +21,9 @@ public class ApoioService {
     public boolean deletar(int id) {
         return apoioDAO.deletar(id);
     }
+
+    // Novo método de deleção por usuario + publicacao
+    public boolean deletarPorUsuarioEPublicacao(int idUsuario, int idPublicacao) {
+        return apoioDAO.deletarPorUsuarioEPublicacao(idUsuario, idPublicacao);
+    }
 }
