@@ -9,8 +9,9 @@ import com.ocupamais.model.Usuario;
 public class UsuarioService {
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-    public void cadastrar(Usuario usuario) {
+    public Usuario cadastrar(Usuario usuario) {
         usuarioDAO.inserir(usuario);
+        return usuario;
     }
 
     public List<Usuario> listarTodos() {

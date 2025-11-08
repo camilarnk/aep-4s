@@ -4,9 +4,12 @@ import com.ocupamais.dto.UsuarioDTO;
 import com.ocupamais.model.Usuario;
 import com.ocupamais.service.UsuarioService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +34,29 @@ public class UsuarioController {
 
     // POST /usuarios - criar novo usuário
     @PostMapping
-    public UsuarioDTO criar(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> criar(@Valid @RequestBody Usuario usuario, BindingResult result) {
+        if (result.hasErrors()) { // validações de cadastro
+            String mensagemErro = result.getAllErrors().get(0).getDefaultMessage();
+            return ResponseEntity.badRequest().body(mensagemErro);
+        }
+        
+        Usuario existente = usuarioService.buscarPorEmail(usuario.getEmail());
+        if (existente != null && existente.getEmail() != null) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body("Email já cadastrado. Tente outro.");
+        }
+
         usuarioService.cadastrar(usuario);
-        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTipo());
+        
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getTipo()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
     }
 
     // GET /usuarios/{email} - buscar por email

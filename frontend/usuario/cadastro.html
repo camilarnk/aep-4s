@@ -121,6 +121,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="cadastro-container">
     <h2>Crie sua conta 🌿</h2>
@@ -145,27 +146,7 @@
     <a href="../index.html" class="link-login">Já tem uma conta? Entrar</a>
   </div>
 
-  <script>
-    document.getElementById("formCadastro").addEventListener("submit", async (e) => {
-      e.preventDefault();
+  <script src="../js/cadastro.js"></script>
 
-      const dados = {
-        nome: e.target.nome.value,
-        email: e.target.email.value,
-        senha: e.target.senha.value,
-        tipo: e.target.usuariotipo.value,
-        bairro: e.target.bairro.value
-      };
-
-      // Simular cadastro local
-      try { localStorage.setItem("usuarioLogado", JSON.stringify(dados)); } catch {}
-      alert("Cadastro realizado com sucesso!");
-      if (dados.tipo === "ADMIN") {
-        window.location.href = "../admin/relatorios.html";
-      } else {
-        window.location.href = "publicacoes.html";
-      }
-    });
-  </script>
 </body>
 </html>
