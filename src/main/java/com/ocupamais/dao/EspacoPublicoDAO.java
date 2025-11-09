@@ -11,22 +11,29 @@ import util.Conexao;
 public class EspacoPublicoDAO {
 
     // inserir espaço público
-    public void inserir(EspacoPublico espaco) {
-        String sql = "INSERT INTO EspacosPublicos (nome, localizacao) VALUES (?, ?)";
+     public void inserir(EspacoPublico espaco) {
+        String sql = "INSERT INTO espacospublicos (nome) VALUES (?)";
+
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, espaco.getNome());
-            stmt.setString(2, espaco.getLocalizacao());
-            stmt.executeUpdate();
+            int linhas = stmt.executeUpdate();
 
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                espaco.setId(rs.getInt(1));
+            if (linhas > 0) {
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        int idGerado = rs.getInt(1);
+                        espaco.setId(idGerado);
+                        System.out.println("Espaço inserido com sucesso! ID=" + idGerado);
+                    }
+                }
+            } else {
+                System.err.println("⚠️ Nenhuma linha inserida para o espaço público!");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("❌ Erro ao inserir espaço público: " + e.getMessage());
         }
     }
 
@@ -41,8 +48,7 @@ public class EspacoPublicoDAO {
             while (rs.next()) {
                 EspacoPublico e = new EspacoPublico(
                         rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("localizacao")
+                        rs.getString("nome")
                 );
                 espacos.add(e);
             }
@@ -65,8 +71,7 @@ public class EspacoPublicoDAO {
             if (rs.next()) {
                 return new EspacoPublico(
                         rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("localizacao")
+                        rs.getString("nome")
                 );
             }
 
@@ -76,15 +81,34 @@ public class EspacoPublicoDAO {
         return null;
     }
 
+    // buscar por nome
+    public EspacoPublico buscarPorNome(String nome) {
+        String sql = "SELECT * FROM espacospublicos WHERE nome = ?";
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                EspacoPublico espaco = new EspacoPublico();
+                espaco.setId(rs.getInt("id"));
+                espaco.setNome(rs.getString("nome"));
+                return espaco;
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Erro ao buscar espaço por nome: " + e.getMessage());
+        }
+        return null;
+    }
+
     // atualizar
     public void atualizar(EspacoPublico espaco) {
-        String sql = "UPDATE EspacosPublicos SET nome = ?, localizacao = ? WHERE id = ?";
+        String sql = "UPDATE EspacosPublicos SET nome = ? WHERE id = ?";
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, espaco.getNome());
-            stmt.setString(2, espaco.getLocalizacao());
-            stmt.setInt(3, espaco.getId());
+            stmt.setInt(2, espaco.getId());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -97,9 +121,11 @@ public class EspacoPublicoDAO {
         String sql = "DELETE FROM EspacosPublicos WHERE id = ?";
         try (Connection conn = Conexao.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, id);
             int linhasAfetadas = stmt.executeUpdate();
             return linhasAfetadas > 0;
+            
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

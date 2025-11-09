@@ -37,7 +37,9 @@ public class PublicacaoController {
                         p.getId(),
                         p.getUsuario() != null ? p.getUsuario().getNome() : "N/A",
                         p.getEspaco() != null ? p.getEspaco().getNome() : "N/A",
-                        p.getDescricao()
+                        p.getDescricao(),
+                        p.getStatus(),
+                        p.getDataCriacao()
                 ))
                 .collect(Collectors.toList());
     }
@@ -45,9 +47,23 @@ public class PublicacaoController {
     // POST: criar nova publicação
     @PostMapping
     public PublicacaoDTO criar(@RequestBody PublicacaoCreateDTO dto) {
-        // Busca objetos completos pelos IDs
         Usuario usuario = usuarioService.buscarPorId(dto.getUsuarioId());
-        EspacoPublico espaco = espacoPublicoService.buscarPorId(dto.getEspacoPublicoId());
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado com o ID " + dto.getUsuarioId());
+        }
+
+        String nomeEspaco = dto.getNomeEspaco();
+        if (nomeEspaco == null || nomeEspaco.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome do espaço é obrigatório.");
+        }
+
+        EspacoPublico espaco = espacoPublicoService.buscarPorNome(nomeEspaco.trim());
+        if (espaco == null) {
+            espaco = new EspacoPublico();
+            espaco.setNome(nomeEspaco.trim());
+            espacoPublicoService.cadastrar(espaco);
+        }
 
         // Monta a publicação
         Publicacao publicacao = new Publicacao(usuario, espaco, dto.getDescricao());
@@ -60,7 +76,9 @@ public class PublicacaoController {
                 publicacao.getId(),
                 usuario.getNome(),
                 espaco.getNome(),
-                publicacao.getDescricao()
+                publicacao.getDescricao(),
+                publicacao.getStatus(),
+                publicacao.getDataCriacao()
         );
     }
 
@@ -68,7 +86,7 @@ public class PublicacaoController {
     @PutMapping("/{id}")
     public PublicacaoDTO atualizar(@PathVariable int id, @RequestBody PublicacaoCreateDTO dto) {
         Usuario usuario = usuarioService.buscarPorId(dto.getUsuarioId());
-        EspacoPublico espaco = espacoPublicoService.buscarPorId(dto.getEspacoPublicoId());
+        EspacoPublico espaco = espacoPublicoService.buscarPorNome(dto.getNomeEspaco());
 
         Publicacao publicacao = new Publicacao(usuario, espaco, dto.getDescricao());
         publicacao.setId(id);
@@ -79,7 +97,9 @@ public class PublicacaoController {
                 publicacao.getId(),
                 usuario.getNome(),
                 espaco.getNome(),
-                publicacao.getDescricao()
+                publicacao.getDescricao(),
+                publicacao.getStatus(),
+                publicacao.getDataCriacao()
         );
     }
 

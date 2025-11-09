@@ -1,3 +1,6 @@
+// ApoioCreateDTO usado no POST, só carrega os IDs (entrada)
+// ApoioDTO usado no GET e resposta, exibe nome e descrição (saída)
+
 package com.ocupamais.dto;
 
 public class ApoioCreateDTO {

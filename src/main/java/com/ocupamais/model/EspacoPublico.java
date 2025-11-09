@@ -11,21 +11,15 @@ public class EspacoPublico {
     @Size(max = 100, message = "Nome do espaço deve ter no máximo 100 caracteres")
     private String nome;
 
-    @NotBlank(message = "Localização é obrigatória")
-    @Size(max = 200, message = "Localização deve ter no máximo 200 caracteres")
-    private String localizacao;
-
     // construtor com id para objetos do banco
-    public EspacoPublico(int id, String nome, String localizacao) {
+    public EspacoPublico(int id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.localizacao = localizacao;
     }
 
     // construtor sem id para inserção no banco
-    public EspacoPublico(String nome, String localizacao) {
+    public EspacoPublico(String nome) {
         this.nome = nome;
-        this.localizacao = localizacao;
     }
 
     public EspacoPublico(){       
@@ -47,16 +41,8 @@ public class EspacoPublico {
         this.nome = nome;
     }
 
-    public String getLocalizacao() {
-        return localizacao;
-    }
-
-    public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao;
-    }
-
     @Override
     public String toString() {
-        return "EspacoPublico [id=" + id + ", nome=" + nome + ", localizacao=" + localizacao + "]";
+        return "EspacoPublico [id=" + id + ", nome=" + nome + "]";
     }
 }

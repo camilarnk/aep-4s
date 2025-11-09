@@ -1,24 +1,17 @@
+// ApoioCreateDTO usado no POST, só carrega os IDs (entrada)
+// ApoioDTO usado no GET e resposta, exibe nome e descrição (saída)
+
 package com.ocupamais.dto;
 
 public class ApoioDTO {
-    private int id;
     private String nomeUsuario;
     private String descricaoPublicacao;
 
     public ApoioDTO() {}
 
-    public ApoioDTO(int id, String nomeUsuario, String descricaoPublicacao) {
-        this.id = id;
+    public ApoioDTO(String nomeUsuario, String descricaoPublicacao) {
         this.nomeUsuario = nomeUsuario;
         this.descricaoPublicacao = descricaoPublicacao;
-    }
-
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNomeUsuario() {

@@ -23,14 +23,14 @@ function gerarHTMLPublicacoes(lista) {
   return lista.map(pub => `
     <article class="post" data-id="${pub.id}">
       <div class="post-header">
-        <div class="avatar">${iniciais(pub.autor)}</div>
+        <div class="avatar">${iniciais(pub.nomeUsuario)}</div>
         <div class="post-meta">
-          <span class="author">${pub.autor}</span>
-          <span class="info">${pub.espaco}</span>
+          <span class="author">${pub.nomeUsuario}</span>
+          <span class="info">${pub.nomeEspaco}</span>
         </div>
         <span class="status-badge status-pendente">Pendente</span>
       </div>
-      <img class="post-image" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1200" alt="Publicação">
+      <img class="post-image" src="" alt="Publicação">
       <div class="post-actions">
         <button class="like-btn" type="button" onclick="curtirPublicacao(${pub.id})">❤️ Curtir</button>
         <span class="likes-count" id="likes-${pub.id}" data-count="0">0 curtidas</span>
@@ -41,23 +41,34 @@ function gerarHTMLPublicacoes(lista) {
 }
 
 function iniciais(nome) {
-  return nome.split(" ").map(p => p[0]).join("").slice(0, 2).toUpperCase();
+  if (!nome || typeof nome !== "string") return "?";
+  const partes = nome.trim().split(" ");
+  return partes.map(p => p[0]).join("").slice(0, 2).toUpperCase();
 }
 
 // Criar nova publicação
 document.getElementById("btnPostar")?.addEventListener("click", async () => {
   const descricao = document.getElementById("postText").value.trim();
-  const espacoId = 1;
+  const nomeEspaco = document.getElementById("postLocal").value.trim();
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-  if (!descricao || !usuario) return alert("Faça login e preencha o campo.");
+
+  if (!descricao || !usuario) {
+    return alert("Faça login e preencha o campo.");
+  }
 
   const novaPublicacao = {
     usuarioId: usuario.id,
-    espacoPublicoId: espacoId,
+    nomeEspaco: nomeEspaco,
     descricao: descricao
   };
 
+  console.log("📤 Enviando nova publicação:", novaPublicacao); // para debug
+
   try {
+    if (!descricao || !usuario || !nomeEspaco) {
+      return alert("Preencha o texto e o local antes de publicar.");
+    }
+    
     const resposta = await fetch("http://localhost:8080/publicacoes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

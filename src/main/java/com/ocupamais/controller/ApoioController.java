@@ -31,7 +31,6 @@ public class ApoioController {
     public List<ApoioDTO> listarTodos() {
         return apoioService.listarTodos().stream()
                 .map(a -> new ApoioDTO(
-                        a.getId(),
                         a.getUsuario() != null ? a.getUsuario().getNome() : "N/A",
                         a.getPublicacao() != null ? a.getPublicacao().getDescricao() : "N/A"
                 ))
@@ -47,7 +46,6 @@ public class ApoioController {
         apoioService.cadastrar(apoio);
 
         return new ApoioDTO(
-                apoio.getId(),
                 usuario.getNome(),
                 publicacao.getDescricao()
         );

@@ -22,6 +22,10 @@ public class EspacoPublicoService {
         return espacoDAO.buscarPorId(id);
     }
 
+    public EspacoPublico buscarPorNome(String nome) {
+        return espacoDAO.buscarPorNome(nome);
+    }
+
     public void atualizar(EspacoPublico espaco) {
         espacoDAO.atualizar(espaco);
     }

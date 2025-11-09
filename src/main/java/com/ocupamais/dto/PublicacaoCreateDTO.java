@@ -1,8 +1,12 @@
+// PublicacaoCreateDTO usado no POST/PUT para receber dados do frontend (entrada)
+// quando o usuário cria uma nova publicação, contém apenas os dados necessários
+// para criar ou atualizar: id do usuário, nome do espaço e a descrição do post.
+
 package com.ocupamais.dto;
 
 public class PublicacaoCreateDTO {
     private int usuarioId;
-    private int espacoPublicoId;
+    private String nomeEspaco;
     private String descricao;
 
     public PublicacaoCreateDTO() {}
@@ -15,12 +19,12 @@ public class PublicacaoCreateDTO {
         this.usuarioId = usuarioId;
     }
 
-    public int getEspacoPublicoId() {
-        return espacoPublicoId;
+    public String getNomeEspaco() {
+        return nomeEspaco;
     }
 
-    public void setEspacoPublicoId(int espacoPublicoId) {
-        this.espacoPublicoId = espacoPublicoId;
+    public void setNomeEspaco(String nomeEspaco) {
+        this.nomeEspaco = nomeEspaco;
     }
 
     public String getDescricao() {

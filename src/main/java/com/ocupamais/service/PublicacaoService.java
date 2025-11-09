@@ -12,6 +12,7 @@ public class PublicacaoService {
 
     public void cadastrar(Publicacao publicacao) {
         publicacaoDAO.inserir(publicacao);
+        System.out.println("📝 Publicação cadastrada via Service: ID=" + publicacao.getId());
     }
 
     public List<Publicacao> listarTodos() {

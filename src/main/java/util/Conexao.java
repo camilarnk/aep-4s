@@ -9,7 +9,9 @@ public class Conexao {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            conn.setAutoCommit(true);
+            return conn;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao conectar ao banco: " + e.getMessage());
         }

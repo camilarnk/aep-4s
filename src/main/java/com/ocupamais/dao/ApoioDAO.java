@@ -16,16 +16,11 @@ public class ApoioDAO {
     public void inserir(Apoio apoio) {
         String sql = "INSERT INTO Apoios (id_usuario, id_publicacao) VALUES (?, ?)";
         try (Connection conn = Conexao.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, apoio.getUsuario().getId());
             stmt.setInt(2, apoio.getPublicacao().getId());
             stmt.executeUpdate();
-
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                apoio.setId(rs.getInt(1));
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,10 +30,15 @@ public class ApoioDAO {
     // listar todos os apoios
     public List<Apoio> listar() {
         List<Apoio> apoios = new ArrayList<>();
-        String sql = "SELECT a.*, u.id AS u_id, u.nome AS u_nome, e.id AS p_id, e.descricao AS p_desc, e.status AS p_status, e.data_criacao AS p_data, e.id_espaco AS p_espaco " +
-                     "FROM Apoios a " +
-                     "JOIN Usuarios u ON a.id_usuario = u.id " +
-                     "JOIN Publicacoes e ON a.id_publicacao = e.id";
+        String sql = """
+            SELECT 
+                a.id_usuario, a.id_publicacao,
+                u.id AS u_id, u.nome AS u_nome,
+                p.id AS p_id, p.descricao AS p_desc, p.status AS p_status, p.data_criacao AS p_data
+            FROM Apoios a
+            JOIN Usuarios u ON a.id_usuario = u.id
+            JOIN Publicacoes p ON a.id_publicacao = p.id
+        """;
         try (Connection conn = Conexao.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -54,11 +54,7 @@ public class ApoioDAO {
                 publicacao.setStatus(rs.getString("p_status"));
                 publicacao.setDataCriacao(rs.getTimestamp("p_data"));
 
-                Apoio apoio = new Apoio();
-                apoio.setId(rs.getInt("id"));
-                apoio.setUsuario(usuario);
-                apoio.setPublicacao(publicacao);
-
+                Apoio apoio = new Apoio(usuario, publicacao);
                 apoios.add(apoio);
             }
 
@@ -68,28 +64,17 @@ public class ApoioDAO {
         return apoios;
     }
 
-    public boolean deletar(int id) {
-        String sql = "DELETE FROM Apoios WHERE id = ?";
-        try (Connection conn = Conexao.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            int linhasAfetadas = stmt.executeUpdate();
-            return linhasAfetadas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     // deletar apoio por id_usuario + id_publicacao
     public boolean deletarPorUsuarioEPublicacao(int idUsuario, int idPublicacao) {
         String sql = "DELETE FROM Apoios WHERE id_usuario = ? AND id_publicacao = ?";
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, idUsuario);
             stmt.setInt(2, idPublicacao);
             int linhas = stmt.executeUpdate();
             return linhas > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
