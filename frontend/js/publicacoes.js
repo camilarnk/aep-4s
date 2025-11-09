@@ -9,10 +9,11 @@ async function carregarPublicacoes() {
     const resposta = await fetch("http://localhost:8080/publicacoes");
     if (!resposta.ok) throw new Error("Erro ao buscar publicações");
 
-    const publicacoes = await resposta.json();
-
-    // Mantém o feed fake e adiciona as publicações reais abaixo
-    postList.insertAdjacentHTML("beforeend", gerarHTMLPublicacoes(publicacoes));
+    let publicacoes = await resposta.json();
+    publicacoes.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
+    
+    // Insere publicações no topo
+    postList.insertAdjacentHTML("afterbegin", gerarHTMLPublicacoes(publicacoes));
   } catch (erro) {
     console.error("Erro ao carregar publicações:", erro);
   }
@@ -20,24 +21,44 @@ async function carregarPublicacoes() {
 
 // Gera HTML para as publicações vindas do backend
 function gerarHTMLPublicacoes(lista) {
-  return lista.map(pub => `
-    <article class="post" data-id="${pub.id}">
-      <div class="post-header">
-        <div class="avatar">${iniciais(pub.nomeUsuario)}</div>
-        <div class="post-meta">
-          <span class="author">${pub.nomeUsuario}</span>
-          <span class="info">${pub.nomeEspaco}</span>
+  return lista.map(pub => {
+    const data = pub.dataCriacao
+      ? new Date(pub.dataCriacao).toLocaleString("pt-BR", {
+          day: "2-digit", month: "2-digit", year: "numeric",
+          hour: "2-digit", minute: "2-digit"
+        })
+      : "Data não disponível";
+
+    const statusClass = pub.status
+      ? `status-${pub.status.toLowerCase().replace("_", "-")}`
+      : "status-pendente";
+
+    const statusLabel =
+      pub.status === "RESOLVIDO" ? "Resolvido" :
+      pub.status === "EM_ANALISE" ? "Em análise" :
+      "Pendente";
+
+    return `
+      <article class="post" data-id="${pub.id}">
+        <div class="post-header">
+          <div class="avatar">${iniciais(pub.nomeUsuario)}</div>
+          <div class="post-meta">
+            <span class="author">${pub.nomeUsuario}</span>
+            <span class="info">${pub.nomeEspaco} • ${data}</span>
+          </div>
+          <span class="status-badge ${statusClass}">${statusLabel}</span>
         </div>
-        <span class="status-badge status-pendente">Pendente</span>
-      </div>
-      <img class="post-image" src="" alt="Publicação">
-      <div class="post-actions">
-        <button class="like-btn" type="button" onclick="curtirPublicacao(${pub.id})">❤️ Curtir</button>
-        <span class="likes-count" id="likes-${pub.id}" data-count="0">0 curtidas</span>
-      </div>
-      <p class="caption">${pub.descricao}</p>
-    </article>
-  `).join("");
+        <img class="post-image" src="" alt="Publicação">
+        <div class="post-actions">
+          <button class="like-btn" type="button" onclick="curtirPublicacao(${pub.id})">❤️ Curtir</button>
+          <span class="likes-count" id="likes-${pub.id}" data-count="${pub.totalApoios || 0}">
+            ${pub.totalApoios || 0} curtidas
+          </span>
+        </div>
+        <p class="caption">${pub.descricao}</p>
+      </article>
+    `;
+  }).join("");
 }
 
 function iniciais(nome) {
@@ -50,7 +71,8 @@ function iniciais(nome) {
 document.getElementById("btnPostar")?.addEventListener("click", async () => {
   const descricao = document.getElementById("postText").value.trim();
   const nomeEspaco = document.getElementById("postLocal").value.trim();
-  const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const status = document.getElementById("postStatus").value;
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogado")); 
 
   if (!descricao || !usuario) {
     return alert("Faça login e preencha o campo.");
@@ -59,7 +81,8 @@ document.getElementById("btnPostar")?.addEventListener("click", async () => {
   const novaPublicacao = {
     usuarioId: usuario.id,
     nomeEspaco: nomeEspaco,
-    descricao: descricao
+    descricao: descricao,
+    status: status
   };
 
   console.log("📤 Enviando nova publicação:", novaPublicacao); // para debug
@@ -86,26 +109,6 @@ document.getElementById("btnPostar")?.addEventListener("click", async () => {
   } catch (erro) {
     console.error("Erro ao criar publicação:", erro);
     alert("Erro ao criar publicação.");
-  }
-});
-
-// Animação e contagem do botão Curtir
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("like-btn")) {
-    const btn = e.target;
-    const countSpan = btn.nextElementSibling;
-    let count = parseInt(countSpan.dataset.count, 10);
-
-    btn.classList.toggle("liked");
-    if (btn.classList.contains("liked")) {
-      count++;
-      btn.textContent = "💚 Curtido";
-    } else {
-      count--;
-      btn.textContent = "❤️ Curtir";
-    }
-    countSpan.dataset.count = count;
-    countSpan.textContent = `${count} curtidas`;
   }
 });
 

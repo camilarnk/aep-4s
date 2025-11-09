@@ -24,7 +24,14 @@ public class PublicacaoDAO {
             stmt.setInt(2, publicacao.getEspaco().getId());
             stmt.setString(3, publicacao.getDescricao());
 
-            String status = publicacao.getStatus() != null ? publicacao.getStatus() : "PENDENTE";
+            String status = (publicacao.getStatus() != null && !publicacao.getStatus().isBlank())
+                    ? publicacao.getStatus().toUpperCase()
+                    : "PENDENTE";
+
+            if (status.equals("ANALISE")) {
+                status = "EM_ANALISE";
+            }
+            
             stmt.setString(4, status);
             publicacao.setStatus(status);
 
@@ -37,7 +44,7 @@ public class PublicacaoDAO {
             }
 
             conn.commit();
-            System.out.println("✅ Publicação salva no banco: ID " + publicacao.getId());
+            System.out.println("✅ Publicação salva no banco: ID " + publicacao.getId() + " | Status: " + publicacao.getStatus());
 
         } catch (SQLException e) {
             e.printStackTrace();

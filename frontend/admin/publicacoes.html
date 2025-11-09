@@ -78,7 +78,7 @@
     .post-meta .info { font-size: 0.88em; color: #666; }
 
     .status-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.78em; font-weight: 600; margin-left: auto; border: 1px solid transparent; }
-    .status-analise { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
+    .status-em-analise{ background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
     .status-resolvido { background: #e8f5e9; color: #256429; border-color: #c8e6c9; }
     .status-pendente { background: #fff3cd; color: #856404; border-color: #ffe69c; } /* Não resolvido */
 
@@ -162,7 +162,7 @@
               <span class="author">Thiago Henrique</span>
               <span class="info">Maringá(Tiradentes) • ontem</span>
             </div>
-            <span class="status-badge status-analise" title="Status">Em análise</span>
+            <span class="status-badge status-em-analise" title="Status">Em análise</span>
           </div>
           <img class="post-image" src="https://www.maringamais.com.br/wp-content/uploads/2025/10/tiradentes-640x427.jpg" alt="Alinhamento de asfalto">
           <p class="caption">Finalmente!!! Não aguentava mais buracos na Tiradentes.</p>
@@ -218,11 +218,11 @@
       const val = sel.value; // analise | resolvido | pendente
 
       // Remove classes anteriores
-      badge.classList.remove('status-analise', 'status-resolvido', 'status-pendente');
+      badge.classList.remove('status-em-analise', 'status-resolvido', 'status-pendente');
 
       // Aplica nova classe e texto
       if (val === 'analise') {
-        badge.classList.add('status-analise');
+        badge.classList.add('status-em-analise');
         badge.textContent = 'Em análise';
       } else if (val === 'resolvido') {
         badge.classList.add('status-resolvido');

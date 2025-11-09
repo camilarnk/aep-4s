@@ -8,6 +8,7 @@ public class PublicacaoCreateDTO {
     private int usuarioId;
     private String nomeEspaco;
     private String descricao;
+    private String status;
 
     public PublicacaoCreateDTO() {}
 
@@ -33,5 +34,13 @@ public class PublicacaoCreateDTO {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -2,19 +2,21 @@
 
 package com.ocupamais.dto;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class PublicacaoDTO {
     private int id;
+    private int totalApoios;
     private String nomeUsuario;
     private String nomeEspaco;
     private String descricao;
     private String status;
-    private Timestamp dataCriacao;
+    private LocalDateTime dataCriacao;
 
-    public PublicacaoDTO(int id, String nomeUsuario, String nomeEspaco, String descricao,
-        String status, Timestamp dataCriacao) {
+    public PublicacaoDTO(int id, int totalApoios, String nomeUsuario, String nomeEspaco, String descricao,
+        String status, LocalDateTime  dataCriacao) {
         this.id = id;
+        this.totalApoios = totalApoios;
         this.nomeUsuario = nomeUsuario;
         this.nomeEspaco = nomeEspaco;
         this.descricao = descricao;
@@ -24,6 +26,10 @@ public class PublicacaoDTO {
 
     public int getId() {
         return id;
+    }
+
+    public int getTotalApoios() {
+        return totalApoios;
     }
 
     public String getNomeUsuario() {
@@ -42,7 +48,7 @@ public class PublicacaoDTO {
         return status;
     }
 
-    public Timestamp getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 }

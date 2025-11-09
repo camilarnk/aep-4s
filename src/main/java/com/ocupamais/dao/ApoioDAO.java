@@ -64,6 +64,19 @@ public class ApoioDAO {
         return apoios;
     }
 
+    public int contarPorPublicacao(int idPublicacao) {
+        String sql = "SELECT COUNT(*) FROM Apoios WHERE id_publicacao = ?";
+        try (Connection conn = Conexao.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idPublicacao);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     // deletar apoio por id_usuario + id_publicacao
     public boolean deletarPorUsuarioEPublicacao(int idUsuario, int idPublicacao) {
         String sql = "DELETE FROM Apoios WHERE id_usuario = ? AND id_publicacao = ?";
