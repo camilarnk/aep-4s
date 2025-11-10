@@ -11,7 +11,6 @@ import com.ocupamais.service.EspacoPublicoService;
 import com.ocupamais.service.ApoioService; // ✅ importar o ApoioService
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +46,7 @@ public class PublicacaoController {
                     p.getEspaco().getNome(),
                     p.getDescricao(),
                     p.getStatus(),
+                    p.getImagem(),
                     p.getDataCriacao().toLocalDateTime()
                 );
             })
@@ -79,6 +79,7 @@ public class PublicacaoController {
 
         Publicacao publicacao = new Publicacao(usuario, espaco, dto.getDescricao());
         publicacao.setStatus(status);
+        publicacao.setImagem(dto.getImagem());
         publicacaoService.cadastrar(publicacao);
 
         return new PublicacaoDTO(
@@ -88,6 +89,7 @@ public class PublicacaoController {
             espaco.getNome(),
             publicacao.getDescricao(),
             publicacao.getStatus(),
+            publicacao.getImagem(),
             publicacao.getDataCriacao().toLocalDateTime()
         );
     }
@@ -106,12 +108,13 @@ public class PublicacaoController {
 
         return new PublicacaoDTO(
             publicacao.getId(),
-            0, // totalApoios não é relevante no PUT
+            0,
             usuario.getNome(),
             espaco.getNome(),
             publicacao.getDescricao(),
             publicacao.getStatus(),
-            LocalDateTime.now()
+            publicacao.getImagem(),
+            publicacao.getDataCriacao().toLocalDateTime()
         );
     }
 

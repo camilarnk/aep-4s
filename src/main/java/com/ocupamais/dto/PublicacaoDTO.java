@@ -11,16 +11,18 @@ public class PublicacaoDTO {
     private String nomeEspaco;
     private String descricao;
     private String status;
+    private String imagem;
     private LocalDateTime dataCriacao;
 
     public PublicacaoDTO(int id, int totalApoios, String nomeUsuario, String nomeEspaco, String descricao,
-        String status, LocalDateTime  dataCriacao) {
+        String status, String imagem, LocalDateTime  dataCriacao) {
         this.id = id;
         this.totalApoios = totalApoios;
         this.nomeUsuario = nomeUsuario;
         this.nomeEspaco = nomeEspaco;
         this.descricao = descricao;
         this.status = status;
+        this.imagem = imagem;
         this.dataCriacao = dataCriacao;
     }
 
@@ -46,6 +48,10 @@ public class PublicacaoDTO {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getImagem() {
+        return imagem;
     }
 
     public LocalDateTime getDataCriacao() {

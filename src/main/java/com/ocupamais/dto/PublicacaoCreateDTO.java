@@ -9,6 +9,7 @@ public class PublicacaoCreateDTO {
     private String nomeEspaco;
     private String descricao;
     private String status;
+    private String imagem;
 
     public PublicacaoCreateDTO() {}
 
@@ -42,5 +43,13 @@ public class PublicacaoCreateDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 }

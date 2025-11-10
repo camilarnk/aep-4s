@@ -1,6 +1,8 @@
 package com.ocupamais.model;
 
 import java.sql.Timestamp;
+
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -19,6 +21,9 @@ public class Publicacao {
     private Timestamp dataCriacao;
 
     private String status; // PENDENTE, EM_ANALISE, RESOLVIDO
+
+    @Lob // para armazenar Base64 longo
+    private String imagem;
 
     // construtor com id
     public Publicacao(int id, Usuario usuario, EspacoPublico espaco, String descricao, Timestamp dataCriacao, String status) {
@@ -90,6 +95,14 @@ public class Publicacao {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     @Override

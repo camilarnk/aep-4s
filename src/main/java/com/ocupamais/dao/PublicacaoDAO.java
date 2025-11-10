@@ -14,7 +14,7 @@ public class PublicacaoDAO {
 
     // inserir publicação
     public void inserir(Publicacao publicacao) {
-        String sql = "INSERT INTO Publicacoes (id_usuario, id_espaco, descricao, status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Publicacoes (id_usuario, id_espaco, descricao, status, imagem) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = Conexao.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -34,6 +34,8 @@ public class PublicacaoDAO {
             
             stmt.setString(4, status);
             publicacao.setStatus(status);
+
+            stmt.setString(5, publicacao.getImagem());
 
             stmt.executeUpdate();
 
@@ -87,7 +89,8 @@ public class PublicacaoDAO {
                         rs.getTimestamp("data_criacao"),
                         rs.getString("status")
                 );
-
+                p.setImagem(rs.getString("imagem"));
+                
                 publicacoes.add(p);
             }
 
@@ -125,14 +128,16 @@ public class PublicacaoDAO {
                         rs.getString("e_nome")
                 );
 
-                return new Publicacao(
-                        rs.getInt("id"),
-                        usuario,
-                        espaco,
-                        rs.getString("descricao"),
-                        rs.getTimestamp("data_criacao"),
-                        rs.getString("status")
+                Publicacao p = new Publicacao(
+                    rs.getInt("id"),
+                    usuario,
+                    espaco,
+                    rs.getString("descricao"),
+                    rs.getTimestamp("data_criacao"),
+                    rs.getString("status")
                 );
+                p.setImagem(rs.getString("imagem"));
+                return p;
             }
 
         } catch (SQLException e) {

@@ -48,7 +48,7 @@ function gerarHTMLPublicacoes(lista) {
           </div>
           <span class="status-badge ${statusClass}">${statusLabel}</span>
         </div>
-        <img class="post-image" src="" alt="Publicação">
+        <img class="post-image" src="${pub.imagem || ''}" alt="Publicação">
         <div class="post-actions">
           <button class="like-btn" type="button" onclick="curtirPublicacao(${pub.id})">❤️ Curtir</button>
           <span class="likes-count" id="likes-${pub.id}" data-count="${pub.totalApoios || 0}">
@@ -72,20 +72,29 @@ document.getElementById("btnPostar")?.addEventListener("click", async () => {
   const descricao = document.getElementById("postText").value.trim();
   const nomeEspaco = document.getElementById("postLocal").value.trim();
   const status = document.getElementById("postStatus").value;
+  const imagemInput = document.getElementById("postImage");
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado")); 
 
   if (!descricao || !usuario) {
     return alert("Faça login e preencha o campo.");
   }
 
+  // Converte imagem para Base64
+  let imagemBase64 = "";
+  if (imagemInput.files.length > 0) {
+    const arquivo = imagemInput.files[0];
+    imagemBase64 = await toBase64(arquivo);
+  }
+
   const novaPublicacao = {
     usuarioId: usuario.id,
     nomeEspaco: nomeEspaco,
     descricao: descricao,
-    status: status
+    status: status,
+    imagem: imagemBase64
   };
 
-  console.log("📤 Enviando nova publicação:", novaPublicacao); // para debug
+  console.log("📤 Enviando nova publicação:", novaPublicacao);
 
   try {
     if (!descricao || !usuario || !nomeEspaco) {
@@ -103,6 +112,7 @@ document.getElementById("btnPostar")?.addEventListener("click", async () => {
 
     alert("✅ Publicação criada!");
     document.getElementById("postText").value = "";
+    document.getElementById("postImage").value = "";
 
     // Insere no topo
     document.getElementById("postList").insertAdjacentHTML("afterbegin", gerarHTMLPublicacoes([pubCriada]));
@@ -111,5 +121,15 @@ document.getElementById("btnPostar")?.addEventListener("click", async () => {
     alert("Erro ao criar publicação.");
   }
 });
+
+// Função auxiliar para converter arquivo em Base64
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
 
 document.addEventListener("DOMContentLoaded", carregarPublicacoes);
